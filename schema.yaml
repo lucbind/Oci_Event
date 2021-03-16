@@ -1,0 +1,125 @@
+## Copyright © 2020, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
+title: "CI/CD infrastrcture setup using Jenkins"
+description: "This example sets up infrastrcture required for CI/CD using Jenkins"
+schemaVersion: 1.0.0
+version: "20201212"
+locale: "en"
+
+variableGroups:
+    - title: General Configuration
+      visible: false
+      variables:
+      - tenancy_ocid
+
+    - title: Required Configuration
+      visible: true  
+      variables:
+      - jenkins_password
+      - compartment_ocid
+      - region
+
+    - title: Optional Configuration
+      visible: true
+      variables:
+      - jenkins_version
+      - instance_os
+      - instance_shape
+      - linux_os_version 
+      - http_port
+      - plugins
+      - jnlp_port
+
+    variables:
+      
+      compartment_ocid:
+        type: oci:identity:compartment:id
+        required: true
+        visibile: true
+        title: Compartment
+        description: "Compartment where you want to create the solution resources"
+
+      region:
+        type: oci:identity:region:name
+        required: true
+        visibile: true
+        title: Region
+        description: "Region where you want to deploy the resources defined by this stack."
+
+      jenkins_password:
+        type: password
+        required: true
+        visibile: true
+        title: "Jenkins Password for the user."
+        description: "Jenkins Password for the user."
+        minLength: 12
+        maxLength: 30
+        pattern: ^[A-Za-z][A-Za-z0-9_#\$]+$
+
+      # Optional Configuration      
+      plugins:
+        type: array
+        required: false
+        title: "Jenkins plugins"
+        description: "Plugins required for the jenkins instance"
+        default: [ "git", "ssh-slaves", "oracle-cloud-infrastructure-compute", "blueocean", "blueocean-github-pipeline" ]
+        pattern: ^[A-Za-z][A-Za-z0-9_#\$]+$
+    
+      instance_shape:
+        type: oci:core:instanceshape:name
+        required: false
+        title: "Instance Shape"
+        description: "A shape is a template that determines the number of CPUs, amount of memory, and other resources allocated to a newly created instance."
+        default: "VM.Standard2.1"
+        dependsOn:
+          compartmentId: ${compartment_ocid}
+      
+      instance_os:
+        type: string
+        required: false
+        title: "Instance OS"
+        description: "An Operating System that determines the operating system for the instance."
+        default: "Oracle Linux"
+      
+      linux_os_version:
+        type: string
+        required: false
+        title: "Instance OS version"
+        description: "An Operating System version that determines the operating system version for the instance."
+        default: "7.9"
+      
+      http_port:
+        title: "HTTP Port"
+        description: "HTTP Port for Jenkins Server"
+        default: 8080
+        type: number
+        required: false
+  
+      jnlp_port:
+        title: "JNLP Port"
+        description: "JNLP Port for Jenkins Server"
+        default: 49187
+        type: number
+        required: false
+
+      jenkins_version:
+        title: "Jenkins version"
+        description: "Jenkins software version"
+        default: "2.249.1"
+        type: string
+        required: false
+        
+    outputs:
+
+      generated_ssh_private_key:
+        title: "Generated SSH Private Key"
+        displayText: "Generated SSH Private Key"
+        type: copyableString
+        visible: true
+
+      master_login_url:
+        title: "master login url for jenkins"
+        displayText: "master login url for jenkins"
+        type: copyableString
+        visible: true
