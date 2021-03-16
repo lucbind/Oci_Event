@@ -18,7 +18,7 @@ variable "jenkins_version" {
 
 variable "instance_shape" {
   description = "Instance Shape"
-  default     = "VM.Standard2.16"
+  default     = "VM.Standard2.1"
 }
 
 variable "instance_os" {

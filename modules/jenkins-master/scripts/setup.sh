@@ -102,8 +102,8 @@ sudo -u jenkins mkdir -p /var/lib/jenkins/init.groovy.d
 sudo mv /home/opc/default-user.groovy /var/lib/jenkins/init.groovy.d/default-user.groovy
 
 #configure token 
-export crumb= $(curl -s -u devops:dev123 http://localhost:8080/crumbIssuer/api/json|grep -w crumb|awk -F\" '{print $4}')
-curl 'http://localhost:8080/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken' --data 'newTokenName=my-second-token' --user admin:${jenkins_password} -H 'Jenkins-Crumb:$(crumb)'
+#export crumb= $(curl -s -u devops:dev123 http://localhost:8080/crumbIssuer/api/json|grep -w crumb|awk -F\" '{print $4}')
+#curl 'http://localhost:8080/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken' --data 'newTokenName=my-second-token' --user admin:${jenkins_password} -H 'Jenkins-Crumb:$(crumb)'
 
 sudo service jenkins restart
 
